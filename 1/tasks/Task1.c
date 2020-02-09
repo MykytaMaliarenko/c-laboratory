@@ -3,18 +3,14 @@
 //
 #include <stdio.h>
 #include <math.h>
+#include "../helpers/Helpers.h"
 
 void CalculatePrismArea() {
-    double a, b, h, area;
+    double area;
 
-    printf("%s", "Input a:");
-    scanf("%lf", &a);
-
-    printf("%s", "Input b:");
-    scanf("%lf", &b);
-
-    printf("%s", "Input h:");
-    scanf("%lf", &h);
+    double a = DoubleInputWithValidating("Input a:", Positive),
+            b = DoubleInputWithValidating("Input b:", Positive),
+            h = DoubleInputWithValidating("Input h:", Positive);
 
     area = a * b + ((a + b + sqrt(a*a + b*b)) * h);
     printf("%s", "Result:");
@@ -22,13 +18,8 @@ void CalculatePrismArea() {
 }
 
 void CalculateParallelogramArea() {
-    double a, h;
-
-    printf("%s", "Input a:");
-    scanf("%lf", &a);
-
-    printf("%s", "Input h:");
-    scanf("%lf", &h);
+    double a = DoubleInputWithValidating("Input a:", Positive),
+            h = DoubleInputWithValidating("Input h:", Positive);
 
     printf("%s", "Result:");
     printf("%lf\n", a * h);
