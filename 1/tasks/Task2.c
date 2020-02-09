@@ -2,72 +2,60 @@
 // Created by nam62 on 04.02.2020.
 //
 #include <stdio.h>
+#include <stdbool.h>
 #include "../helpers/Helpers.h"
 
 void binprintf(int v);
 
+int GetBite(unsigned short int number, int pos)
+{
+    int k = number >> pos;
+    return k & 1;
+}
 
 void InputStruct() {
-    int res = 0, c;//создаем 2 перм типа инт
-    printf("Input data:\n");
+    unsigned short int res = 0;
+    int user_id;
+    bool r, w, e, x;
 
-    for(c = 0; c < 6; c++) {
-        printf("%d user access:\n", c + 1);
-        char userInput = CharInput("");//пользователь вводит данные(одно из 4-х букв)
-        // Я решил кодировать буквы так: R-00 W-01 E-10 X-11
-        switch (userInput) {
-            case 'R':
-                res |= 0 << c * 2;
-                break;
-
-            case 'W':
-                res |= 1 << c * 2;
-                break;
-
-            case 'E':
-                res |= 2 << c * 2;
-                break;
-
-            case 'X':
-                res |= 3 << c * 2;
-                break;
-
-            default:
-                c--;
-                printf("Not valid\n");
-        }
+    user_id = IntInput("\nInput user id:");
+    while (user_id > 128 || user_id < 0)
+    {
+        printf("\nNot Valid!");
+        user_id = IntInput("\nInput user id:");
     }
 
-    printf("Res in HEX: %X\n", res);
+    r = BoolInput("R:");
+    w = BoolInput("W:");
+    e = BoolInput("E:");
+    x = BoolInput("X:");
+
+    res |= user_id << 8;
+    res |= r << 7;
+    res |= w << 6;
+    res |= e << 5;
+    res |= x;
+
+    printf("\nRes in HEX: %X\n", res);
 }
 
 void InputStructAsHex() {
     unsigned int n;
-    int c, k;
+
+    printf("HEX:");
+    scanf("%X", &n);
     fflush(stdin);
 
-    scanf("%X", &n);
-
-    for (c = 0; c < 6; c++)
-    {
-        k = (n & (1 << (c * 2))) >> (c * 2);//the first bite
-        k |= ((n & (1 << ((c * 2) + 1))) >> (c * 2));// the second bite leftshifted on 1
-
-        if (k == 3)
-            printf("\n%d: X", c);
-        else if (k == 2)
-            printf("\n%d: E", c);
-        else if (k == 1)
-            printf("\n%d: W", c);
-        else
-            printf("\n%d: R", c);
-    }
-
+    printf("user id:%d", n >> 8);
+    printf("\nR:%s", GetBite(n, 7) ? "true" : "false");
+    printf("\nW:%s", GetBite(n, 6) ? "true" : "false");
+    printf("\nE:%s", GetBite(n, 5) ? "true" : "false");
+    printf("\nX:%s", GetBite(n, 0) ? "true" : "false");
 }
 
 void binprintf(int v)
 {
-    unsigned int mask=1<<((sizeof(int)<<3)-1);
+    unsigned int mask=1<<((sizeof(unsigned short int)<<3)-1);
     while(mask) {
         printf("%d", (v&mask ? 1 : 0));
         mask >>= 1;

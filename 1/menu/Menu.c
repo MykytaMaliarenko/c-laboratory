@@ -1,6 +1,7 @@
 //
 // Created by nam62 on 04.02.2020.
 //
+#include "../helpers/Helpers.h"
 #include "Menu.h"
 #include <stdio.h>
 
@@ -17,7 +18,7 @@ void Start(struct MenuOption options[], int length) {
         printf("%d)", length + 1);
         printf("To exit\n");
 
-        scanf("\n%d", &userInput);
+        userInput = IntInput("");
         if (userInput == length + 1) {
             break;
         } else if (userInput > 0 && userInput <= length) {

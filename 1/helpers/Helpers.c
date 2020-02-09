@@ -4,6 +4,49 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+int IntInput(char* text) {
+    int res = 0;
+    int error = 0;
+
+    do {
+        printf("%s", text);
+        error = scanf("%d", &res);
+        fflush(stdin);
+    } while(error != 1);
+
+    return res;
+}
+
+int IntInputWithValidating(char* text, bool (*validator)(int))
+{
+    int res;
+    bool isValid = false;
+
+    do {
+        res = IntInput(text);
+        isValid = validator(res);
+        if (isValid == false)
+            printf("Not Valid!\n");
+    } while(isValid == false);
+
+    return res;
+}
+
+bool BoolInput(char* text) {
+    char inp[1];
+    int error = 0;
+
+    do {
+        printf("%s", text);
+        error = scanf("%s", inp);
+        if (error == 1 && (inp[0] == 't' || inp[0] == 'f'))
+            break;
+        fflush(stdin);
+    } while(1);
+
+    return inp[0] == 't' ? true : false;
+}
+
 double DoubletInput(char* text) {
     double res;
     int error = 0;

@@ -6,6 +6,12 @@
 #define INC_1_HELPERS_H
 #include <stdbool.h>
 
+int IntInput(char* text);
+
+int IntInputWithValidating(char* text, bool (*validator)(int));
+
+bool BoolInput(char* text);
+
 double DoubletInput(char* text);
 
 double DoubleInputWithValidating(char* text, bool (*validator)(double));
