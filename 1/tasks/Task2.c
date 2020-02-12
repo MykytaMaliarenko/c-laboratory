@@ -46,9 +46,6 @@ void InputStructAsHex() {
     scanf("%X", &n);
     fflush(stdin);
 
-
-    binprintf(n);
-
     printf("user id:%d", n >> 8);
     printf("\nR:%s", GetBite(n, 7) ? "true" : "false");
     printf("\nW:%s", GetBite(n, 6) ? "true" : "false");
