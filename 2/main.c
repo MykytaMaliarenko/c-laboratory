@@ -2,7 +2,6 @@
 #include "menu/Menu.h"
 #include "tasks/Task1.h"
 #include "tasks/Task2.h"
-#include "helpers/ArrayHelpers.h"
 
 int main() {
     struct MenuOption options[] = {

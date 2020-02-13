@@ -7,12 +7,13 @@
 int IntInput(char* text) {
     int res = 0;
     int error = 0;
+    char term;
 
     do {
         printf("%s", text);
-        error = scanf("%d", &res);
+        error = scanf("%d%c", &res, &term);
         fflush(stdin);
-    } while(error != 1);
+    } while(error != 2 || term != '\n');
 
     return res;
 }
@@ -50,12 +51,13 @@ bool BoolInput(char* text) {
 double DoubletInput(char* text) {
     double res;
     int error = 0;
+    char term;
 
     do {
-        fflush(stdin);
         printf("%s", text);
-        error = scanf("%lf", &res);
-    } while(error != 1);
+        error = scanf("%lf%c", &res, &term);
+        fflush(stdin);
+    } while(error != 2 || term != '\n');
 
     return res;
 }

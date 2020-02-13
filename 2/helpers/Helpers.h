@@ -22,6 +22,4 @@ char CharInput(char* text);
 
 char CharInputWithValidating(char* text, bool (*validator)(char));
 
-char CharIn(char* text);
-
 #endif //INC_1_HELPERS_H

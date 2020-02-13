@@ -13,14 +13,11 @@ void CalculatePrismArea() {
             h = DoubleInputWithValidating("Input h:", Positive);
 
     area = a * b + ((a + b + sqrt(a*a + b*b)) * h);
-    printf("%s", "Result:");
-    printf("%lf", area);
+    printf("Result:\n%.2f\n", area);
 }
 
 void CalculateParallelogramArea() {
     double a = DoubleInputWithValidating("Input a:", Positive),
             h = DoubleInputWithValidating("Input h:", Positive);
-
-    printf("%s", "Result:");
-    printf("%lf\n", a * h);
+    printf("Result:\n%.2f\n", a * h);
 }
