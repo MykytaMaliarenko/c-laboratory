@@ -45,7 +45,7 @@ void ShuttleSort()
     char t[20];
     for (i = 0; i < n; i++)
     {
-        strcat(pr, "a[");
+        strcat(pr, "\na[");
         itoa(i, t, 10);
         strcat(pr, t);
         strcat(pr, "]=");
