@@ -41,6 +41,16 @@ void SaddlePoint()
         maxElementInColumnsValues[j] = colArr[maxElementsInColumns[j]];
     }
 
+    printf("Matrix: \n");
+    for (i=0; i<rows; i++)
+    {
+        for(j=0; j<cols; j++)
+        {
+            printf("%0.2f     ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+
     printf("Saddle Points:\n");
     int pos, posOfMinElementInRow;
     double el;
