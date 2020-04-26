@@ -4,7 +4,8 @@
 #include "./tasks/Task1.h"
 
 int main() {
-    InitConsole(6, "Tema: DYNAMICHNI MASYVY");
+    //InitConsole(6, "Динамічни масиви");
+    printf("KM-92 Mykyta Maliarenko lab #6\n");
 
     struct MenuOption options[] = {
             {"Matrix Multiplication", MatrixMultiplication},

@@ -40,6 +40,8 @@ double** InputDoubleMatrix(char* arrayName, int *rows, int *cols)
     if (*cols == -1)
         *cols = IntInput("Num of Columns:");
 
+    bool randomly = BoolInput("Do you want input randomly(t/f)?");
+
     double **mat = (double **) malloc(*rows * sizeof(double *));
 
     char pr[20] = "";
@@ -53,7 +55,8 @@ double** InputDoubleMatrix(char* arrayName, int *rows, int *cols)
         strcat(pr, t);
         strcat(pr, "]");
 
-        mat[i] = InputDoubleArray(pr, cols);
+        if (randomly == false)
+            mat[i] = InputDoubleArray(pr, cols);
 
         memset(pr, 0, sizeof(pr));
     }

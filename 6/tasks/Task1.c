@@ -25,8 +25,8 @@ void MatrixMultiplication()
     double** matrixA = InputDoubleMatrix("A", &m, &k);
     double** matrixB = InputDoubleMatrix("B", &k, &n);
 
-    printMatrix("A", matrixA, m, k);
-    printMatrix("B", matrixB, k, n);
+    printMatrix("\ninputted matrix A", matrixA, m, k);
+    printMatrix("\ninputted matrix B", matrixB, k, n);
 
     double** matrixC = malloc(m * sizeof(double*));
     for (int i = 0; i < m; i++) {
@@ -41,7 +41,11 @@ void MatrixMultiplication()
         }
     }
 
-    printMatrix("A * B", matrixC, m, n);
+    printMatrix("\nA * B", matrixC, m, n);
+
+    free(matrixA);
+    free(matrixB);
+    free(matrixC);
 }
 
 void printMatrix(char* matrixName, double** matrix, int rows, int cols)

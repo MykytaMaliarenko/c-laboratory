@@ -15,26 +15,28 @@ struct Train {
     int departureTime;
 };
 
-void inputTrains(struct Train *trains[]);
+void inputTrains(struct Train trains[]);
 
 char* departureTimeToString(int time);
 
-void sortTrainsByDepartureTime(struct Train *arr[]);
+void sortTrainsByDepartureTime(struct Train arr[]);
 
-struct Train* findTrainByDestination(struct Train *trains[], char* destination);
+void printTrainsAsTable(struct Train trains[]);
+
+struct Train* findTrainByDestination(struct Train trains[], char* destination);
 
 unsigned int inputDepartureTime();
 
 //45 000
 void WorkingWithStructs()
 {
-    struct Train *trains[n];
+    struct Train trains[n];
     inputTrains(trains);
+    printTrainsAsTable(trains);
 
     printf("\nSorted trains by departure time: \n");
     sortTrainsByDepartureTime(trains);
-    for (int i = 0; i < n; i++)
-        printf("\t#%d: %s\n", trains[i]->trainNumber, departureTimeToString(trains[i]->departureTime));
+    printTrainsAsTable(trains);
 
     char* searchRequest = InputString("Place of Destination to Search:");
     struct Train* res = findTrainByDestination(trains, searchRequest);
@@ -44,15 +46,14 @@ void WorkingWithStructs()
         printf("Train Not Found!\n");
 }
 
-void inputTrains(struct Train *trains[])
+void inputTrains(struct Train trains[])
 {
     for (int i = 0; i < n; i++)
     {
         printf("\nTrain %d:\n", i + 1);
-        trains[i] = malloc(sizeof(struct Train));
-        trains[i]->trainNumber = IntInput("Train Number:");
-        trains[i]->destination = InputString("Train Place Of Destination:");
-        trains[i]->departureTime = inputDepartureTime();
+        trains[i].trainNumber = IntInput("Train Number:");
+        trains[i].destination = InputString("Train Place Of Destination:");
+        trains[i].departureTime = inputDepartureTime();
     }
 }
 
@@ -64,7 +65,7 @@ unsigned int inputDepartureTime()
         printf("%s", "Departure time(hh:mm):");
         error = scanf("%02d:%02d", &hour, &minute);
         fflush(stdin);
-    } while(error != 2);
+    } while(error != 2 || hour > 23 || hour < 0 || minute > 59 || minute < 0);
 
     return (unsigned int) hour * 3600 + minute * 60;
 }
@@ -77,6 +78,27 @@ char* departureTimeToString(int time) {
     return str;
 }
 
+void printTrainsAsTable(struct Train trains[])
+{
+    printf("-----------------------------------\n");
+    printf("ID\tDepart. Time\tDestination\n");
+    printf("-----------------------------------\n");
+
+    char* result;
+    for (int i=0; i < n; i++)
+    {
+        char* departureTimeStr = departureTimeToString(trains[i].departureTime);
+        result = calloc(45, sizeof(char));
+        sprintf(result, "#%-4d\t%-12s\t%-15s\n", trains[i].trainNumber, departureTimeStr, trains[i].destination);
+        free(departureTimeStr);
+
+        printf("%s", result);
+        free(result);
+    }
+
+    printf("\n");
+}
+
 void swap(struct Train* xp, struct Train* yp)
 {
     struct Train temp = *xp;
@@ -84,7 +106,7 @@ void swap(struct Train* xp, struct Train* yp)
     *yp = temp;
 }
 
-void sortTrainsByDepartureTime(struct Train *arr[])
+void sortTrainsByDepartureTime(struct Train arr[])
 {
     int i, j, min_idx;
 
@@ -94,20 +116,20 @@ void sortTrainsByDepartureTime(struct Train *arr[])
         // Find the minimum element in unsorted array
         min_idx = i;
         for (j = i+1; j < n; j++)
-            if (arr[j]->departureTime < arr[min_idx]->departureTime)
+            if (arr[j].departureTime < arr[min_idx].departureTime)
                 min_idx = j;
 
         // Swap the found minimum element with the first element
-        swap(arr[min_idx], arr[i]);
+        swap(&arr[min_idx], &arr[i]);
     }
 }
 
-struct Train* findTrainByDestination(struct Train *trains[], char* destination)
+struct Train* findTrainByDestination(struct Train trains[], char* destination)
 {
     for (int i = 0; i < n; i++)
     {
-        if (strcmp(trains[i]->destination, destination) == 0)
-            return trains[i];
+        if (strcmp(trains[i].destination, destination) == 0)
+            return &trains[i];
     }
 
     return NULL;
