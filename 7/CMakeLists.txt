@@ -7,6 +7,9 @@ add_executable(7 main.c
         LinkedList/LinkedList.h LinkedList/LinkedList.c
         Train/Train.h Train/Train.c
         Tasks/Task1.c Tasks/Task1.h
-        helpers/Helpers.h helpers/Helpers.c
-        helpers/ConsoleHelpers.h helpers/ConsoleHelpers.c
-        Tasks/Task2.c Tasks/Task2.h)
+        Helpers/Helpers.h Helpers/Helpers.c
+        Helpers/ConsoleHelpers.h Helpers/ConsoleHelpers.c
+        Menu/Menu.h Menu/Menu.c
+        Tasks/Task2.c Tasks/Task2.h
+        Tasks/TaskWorkingWithLinkedList.c Tasks/TaskWorkingWithLinkedList.h
+        LinkedList/LinkeListFuncsForLab.c LinkedList/LinkeListFuncsForLab.h)

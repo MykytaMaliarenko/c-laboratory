@@ -4,19 +4,77 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <lzma.h>
+#include "string.h"
+
+//G.O.T.Z. charToReplace charToReplaceWith
+char* replaceData = "o0";
+int replaceDataLen = 2;
+
+
+void Replace(char* str)
+{
+    for (int i=0; i < strlen(str); i++)
+    {
+        for (int j=0; j < replaceDataLen; j+=2)
+        {
+            if (str[i] == replaceData[j])
+                str[i] = replaceData[j+1];
+        }
+    }
+}
+
+void CleanStdin()
+{
+    int c;
+    do {
+        c = getchar();
+    } while (c != '\n' && c != EOF);
+}
 
 int IntInput(char* text) {
     int res = 0;
     int error = 0;
-    char term;
+    char* temp = calloc(25, sizeof(char));
+    char* end;
 
     do {
         printf("%s", text);
-        error = scanf("%d%c", &res, &term);
-        fflush(stdin);
-    } while(error != 2 || term != '\n');
 
-    return res;
+        error = scanf("%s", temp);
+        CleanStdin();
+        if (error != 1)
+            continue;
+
+        Replace(temp);
+
+        res = strtol(temp, &end, 0);
+        if (*end == '\0')
+            return res;
+    } while(1);
+}
+
+int* PtrIntInput(char* text)
+{
+    int* res = calloc(sizeof(int), 1);
+    int error = 0;
+    char* temp = calloc(25, sizeof(char));
+    char* end;
+
+    do {
+        printf("%s", text);
+
+        error = scanf("%s", temp);
+        CleanStdin();
+        if (error != 1)
+            continue;
+
+        Replace(temp);
+
+        *res = strtol(temp, &end, 0);
+        if (*end == '\0')
+            return res;
+    } while(1);
 }
 
 int IntInputWithValidating(char* text, bool (*validator)(int))
@@ -43,24 +101,33 @@ bool BoolInput(char* text) {
         error = scanf("%s", inp);
         if (error == 1 && (inp[0] == 't' || inp[0] == 'f'))
             break;
-        fflush(stdin);
+        CleanStdin();
     } while(1);
 
     return inp[0] == 't' ? true : false;
 }
 
 double DoubletInput(char* text) {
-    double res;
+    double res = 0;
     int error = 0;
-    char term;
+    char* temp = calloc(25, sizeof(char));
+    char* end;
 
     do {
         printf("%s", text);
-        error = scanf("%lf%c", &res, &term);
-        fflush(stdin);
-    } while(error != 2 || term != '\n');
 
-    return res;
+        error = scanf("%s", temp);
+        CleanStdin();
+        if (error != 1)
+            continue;
+
+        Replace(temp);
+
+        res = strtod(temp, &end);
+        if (*end == '\0')
+            return res;
+
+    } while(1);
 }
 
 double DoubleInputWithValidating(char* text, bool (*validator)(double)) {

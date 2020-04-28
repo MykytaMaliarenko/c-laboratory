@@ -26,6 +26,20 @@ LinkedList* createList()
     return list;
 }
 
+void destroyList(LinkedList* self,  void (*destroyVal)(void*))
+{
+    LinkedListNode* currentNode = self->firstNode;
+    LinkedListNode* t = NULL;
+    while (currentNode != NULL) {
+        t = currentNode->nextNode;
+        destroyVal(currentNode->value);
+        free(currentNode);
+        currentNode = t;
+    }
+
+    free(self);
+}
+
 LinkedListNode* get(LinkedList* self, int index)
 {
     if (self->size > index && index > -1)
@@ -124,8 +138,13 @@ void addByIndex(LinkedList* self, int index, void* value)
         node->nextNode = NULL;
 
         if (index == 0) {
-            node->nextNode = self->firstNode;
-            self->firstNode = node;
+            if (self->size == 0)
+                self->firstNode = node;
+            else
+            {
+                node->nextNode = self->firstNode;
+                self->firstNode = node;
+            }
         } else {
             LinkedListNode* insertAfter = get(self, index-1);
             node->nextNode = insertAfter->nextNode;

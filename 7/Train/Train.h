@@ -5,7 +5,7 @@
 #ifndef INC_7_TRAIN_H
 #define INC_7_TRAIN_H
 
-typedef struct Train {
+typedef struct {
     char *destination;
     int trainNumber;
     int departureTime;

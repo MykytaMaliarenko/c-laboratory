@@ -6,7 +6,11 @@
 #define INC_1_HELPERS_H
 #include <stdbool.h>
 
+void CleanStdin();
+
 int IntInput(char* text);
+
+int* PtrIntInput(char* text);
 
 int IntInputWithValidating(char* text, bool (*validator)(int));
 
