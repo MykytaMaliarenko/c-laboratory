@@ -12,16 +12,21 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define n 2
+
 char* trainFuncs[] = {
-        "addByIndex", "addToEnd", "addToBeginning", "addAfterValue",
-        "deleteByIndex", "deleteFirst", "deleteLast", "deleteByValue",
+        //"addByIndex", "addToEnd", "addToBeginning", "addAfterValue",
+        "add",
+        //"deleteByIndex", "deleteFirst", "deleteLast", "deleteByValue",
+        "delete",
         "print",
-        "input n elements",
-        "sort by departure time", "get train by place of destination"
+        "sort by departure time", "search train"
 };
 
 LinkedList* list;
 
+
+void Lab5();
 
 Train* inputTrain(char* text);
 
@@ -48,13 +53,19 @@ void printTrainsAsTable(LinkedList* self);
 
 Train* findTrainByDestination(LinkedList* trains, char* destination);
 
+Train* findTrainByTrainNumber(LinkedList* trains, int trainNumber);
+
+Train* findTrainByDepartureTime(LinkedList* trains, int departureTime);
+
 unsigned int inputDepartureTime();
 
 void Trains()
 {
     list = createList();
-    int numOfFuncs = sizeof(trainFuncs) / sizeof(char*);
 
+    Lab5();
+
+    int numOfFuncs = sizeof(trainFuncs) / sizeof(char*);
     while (1) {
         printf("\nAvailable trainFuncs:\n");
         for (int i = 0; i < numOfFuncs; i++)
@@ -63,120 +74,152 @@ void Trains()
 
         int funcToExecute = IntInput("func to run:");
         switch (funcToExecute - 1) {
-            //addByIndex
+            //add
             case 0:
             {
-                int index = IntInputWithValidating("index: ", trainListIndexInputValidator);
-                addByIndex(list, index, inputTrain("element to add: "));
+                char* availableSubFuncs[] = {
+                        "addByIndex",
+                        "addToEnd",
+                        "addToBeginning",
+                        "addAfterValue"
+                };
+                int numOfAvailableSubFuncs = sizeof(availableSubFuncs) / sizeof(char*);
 
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
+                printf("\nAvailable Sub Funcs:\n");
+                for (int i = 0; i < numOfAvailableSubFuncs; i++)
+                    printf("\t%d)%s\n", i + 1, availableSubFuncs[i]);
+
+                int subFuncToExecute = IntInput("sub func to run:");
+                switch (subFuncToExecute - 1) {
+                    //addByIndex
+                    case 0:
+                    {
+                        int index = IntInputWithValidating("index: ", trainListIndexInputValidator);
+                        addByIndex(list, index, inputTrain("element to add: "));
+
+                        printf("%s", "\nResult\n");
+                        printTrainsAsTable(list);
+                        break;
+                    }
+
+                    //addToEnd
+                    case 1:
+                    {
+                        add(list, inputTrain("element to add: "));
+
+                        printf("%s", "\nResult\n");
+                        printTrainsAsTable(list);
+                        break;
+                    }
+
+                    //addToBeginning
+                    case 2:
+                    {
+                        addToBeginning(list, inputTrain("element to add: "));
+
+                        printf("%s", "\nResult\n");
+                        printTrainsAsTable(list);
+                        break;
+                    }
+
+                    //addAfterValue
+                    case 3:
+                    {
+                        int* valueToSearch = PtrIntInput("train number to add after: ");
+                        Train *value = inputTrain("value: ");
+                        addAfterValue(list, value, trainsComparator, valueToSearch);
+
+                        printf("%s", "\nResult\n");
+                        printTrainsAsTable(list);
+                        break;
+                    }
+
+                    default:
+                        printf("sub func not found");
+                }
                 break;
             }
 
-            //addToEnd
+            //delete
             case 1:
             {
-                add(list, inputTrain("element to add: "));
+                char* availableSubFuncs[] = {
+                        "deleteByIndex",
+                        "deleteFirst",
+                        "deleteLast",
+                        "deleteByValue"
+                };
+                int numOfAvailableSubFuncs = sizeof(availableSubFuncs) / sizeof(char*);
+                if (list->size == 0)
+                {
+                    printf("list is empty\n");
+                    break;
+                }
 
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
-                break;
-            }
+                printf("\nAvailable Sub Funcs:\n");
+                for (int i = 0; i < numOfAvailableSubFuncs; i++)
+                    printf("\t%d)%s\n", i + 1, availableSubFuncs[i]);
 
-             //addToBeginning
-            case 2:
-            {
-                addToBeginning(list, inputTrain("element to add: "));
+                int subFuncToExecute = IntInput("sub func to run:");
+                switch (subFuncToExecute - 1) {
+                    //deleteByIndex
+                    case 0:
+                    {
+                        int index = IntInputWithValidating("index: ", trainListIndexInputValidator);
+                        delete(list, index);
 
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
-                break;
-            }
+                        printf("%s", "\nResult\n");
+                        printTrainsAsTable(list);
+                        break;
+                    }
 
-            //addAfterValue
-            case 3:
-            {
-                int* valueToSearch = PtrIntInput("train number to add after: ");
-                Train *value = inputTrain("value: ");
-                addAfterValue(list, value, trainsComparator, valueToSearch);
+                    //deleteFirst
+                    case 1:
+                    {
+                        deleteFirst(list);
 
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
-                break;
-            }
+                        printf("%s", "\nResult\n");
+                        printTrainsAsTable(list);
+                        break;
+                    }
 
-            //deleteByIndex
-            case 4:
-            {
-                int index = IntInputWithValidating("index: ", trainListIndexInputValidator);
-                delete(list, index);
+                    //deleteLast
+                    case 2:
+                    {
+                        deleteLast(list);
 
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
-                break;
-            }
+                        printf("%s", "\nResult\n");
+                        printTrainsAsTable(list);
+                        break;
+                    }
 
-            //deleteFirst
-            case 5:
-            {
-                deleteFirst(list);
+                    //deleteByValue
+                    case 3:
+                    {
+                        int* valueToSearch = PtrIntInput("train number to delete: ");
+                        deleteByValue(list, trainsComparator, valueToSearch);
 
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
-                break;
-            }
+                        printf("%s", "\nResult\n");
+                        printTrainsAsTable(list);
+                        break;
+                    }
 
-            //deleteLast
-            case 6:
-            {
-                deleteLast(list);
-
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
-                break;
-            }
-
-            //deleteByValue
-            case 7:
-            {
-                int* valueToSearch = PtrIntInput("train number to delete: ");
-                deleteByValue(list, trainsComparator, valueToSearch);
-
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
+                    default:
+                        printf("sub func not found");
+                }
                 break;
             }
 
             //print
-            case 8:
+            case 2:
             {
                 printf("%s", "\nResult\n");
                 printTrainsAsTable(list);
                 break;
             }
 
-            //input n elements
-            case 9:
-            {
-                int n = IntInputWithValidating("n:", PositiveInt);
-                for (int i = 0; i < n; i++)
-                {
-                    printf("\nTrain %d:\n", i + 1);
-                    Train* train = malloc(sizeof(Train));
-                    train->trainNumber = IntInput("Train Number:");
-                    train->destination = InputString("Train Place Of Destination:");
-                    train->departureTime = inputDepartureTime();
-                    add(list, train);
-                }
-
-                printf("%s", "\nResult\n");
-                printTrainsAsTable(list);
-                break;
-            }
-
-             //sort by place of destination
-            case 10:
+            //sort by place of destination
+            case 3:
             {
                 sort(list, sortByDepartureTime);
 
@@ -185,19 +228,45 @@ void Trains()
                 break;
             }
 
-            //get train by place of destination
-            case 11:
+            //search train
+            case 4:
             {
-                char* searchRequest = InputString("Place of Destination to Search:");
-                Train* res = findTrainByDestination(list, searchRequest);
-                if (res != NULL)
-                    printf("Train Number: %d\n", res->trainNumber);
+                bool keyFound = false;
+                char* key = InputString("Search by(destination, trainNumber, departureTime):");
+                Train* res = NULL;
+                if (strcmp(key, "destination") == 0)
+                {
+                    char* searchRequest = InputString("place of destination:");
+                    res = findTrainByDestination(list, searchRequest);
+                    keyFound = true;
+                }
+                else if (strcmp(key, "trainNumber") == 0)
+                {
+                    int searchRequest = IntInput("train number:");
+                    res = findTrainByTrainNumber(list, searchRequest);
+                    keyFound = true;
+                }
+                else if (strcmp(key, "departureTime") == 0)
+                {
+                    int searchRequest = inputDepartureTime();
+                    res = findTrainByDepartureTime(list, searchRequest);
+                    keyFound = true;
+                }
+
+                if (keyFound)
+                {
+                    if (res != NULL)
+                        printf("Train Number: %d\n", res->trainNumber);
+                    else
+                        printf("Train Not Found!\n");
+                }
                 else
-                    printf("Train Not Found!\n");
+                    printf("key wasn't found");
+
                 break;
             }
 
-            case 12:
+            case 5:
             {
                 destroyList(list, trainListDestroyer);
                 return;
@@ -207,6 +276,35 @@ void Trains()
                 printf("func not found");
         }
     }
+}
+
+void Lab5()
+{
+    for (int i = 0; i < n; i++)
+    {
+        printf("\nTrain %d:\n", i + 1);
+        Train* train = malloc(sizeof(Train));
+        train->trainNumber = IntInput("Train Number:");
+        train->destination = InputString("Train Place Of Destination:");
+        train->departureTime = inputDepartureTime();
+        add(list, train);
+    }
+
+    printf("%s", "\nResult\n");
+    printTrainsAsTable(list);
+
+    printf("\nSorted trains by departure time: \n");
+    sort(list, sortByDepartureTime);
+
+    printf("%s", "\nResult\n");
+    printTrainsAsTable(list);
+
+    char* searchRequest = InputString("Place of Destination to Search:");
+    Train* res = findTrainByDestination(list, searchRequest);
+    if (res != NULL)
+        printf("Train Number: %d\n", res->trainNumber);
+    else
+        printf("Train Not Found!\n");
 }
 
 Train* inputTrain(char* text)
@@ -261,6 +359,28 @@ Train* findTrainByDestination(LinkedList* trains, char* destination)
     for (int i = 0; i < trains->size; i++)
     {
         if (strcmp(parseValueAsTrain(get(trains, i))->destination, destination) == 0)
+            return parseValueAsTrain(get(trains, i));
+    }
+
+    return NULL;
+}
+
+Train* findTrainByTrainNumber(LinkedList* trains, int trainNumber)
+{
+    for (int i = 0; i < trains->size; i++)
+    {
+        if (parseValueAsTrain(get(trains, i))->trainNumber == trainNumber)
+            return parseValueAsTrain(get(trains, i));
+    }
+
+    return NULL;
+}
+
+Train* findTrainByDepartureTime(LinkedList* trains, int departureTime)
+{
+    for (int i = 0; i < trains->size; i++)
+    {
+        if (parseValueAsTrain(get(trains, i))->departureTime == departureTime)
             return parseValueAsTrain(get(trains, i));
     }
 

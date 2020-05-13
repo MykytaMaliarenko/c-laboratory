@@ -8,7 +8,6 @@
 int main()
 {
     printf("KM-92 Mykyta Maliarenko lab #7\n");
-
     struct MenuOption options[] = {
             {"Reworked lab 5", Trains},
             {"Ints", Integers},

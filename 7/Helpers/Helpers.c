@@ -12,7 +12,7 @@ char* replaceData = "o0";
 int replaceDataLen = 2;
 
 
-void Replace(char* str)
+void DefaultReplace(char* str)
 {
     for (int i=0; i < strlen(str); i++)
     {
@@ -46,7 +46,7 @@ int IntInput(char* text) {
         if (error != 1)
             continue;
 
-        Replace(temp);
+        DefaultReplace(temp);
 
         res = strtol(temp, &end, 0);
         if (*end == '\0')
@@ -69,7 +69,7 @@ int* PtrIntInput(char* text)
         if (error != 1)
             continue;
 
-        Replace(temp);
+        DefaultReplace(temp);
 
         *res = strtol(temp, &end, 0);
         if (*end == '\0')
@@ -121,7 +121,7 @@ double DoubletInput(char* text) {
         if (error != 1)
             continue;
 
-        Replace(temp);
+        DefaultReplace(temp);
 
         res = strtod(temp, &end);
         if (*end == '\0')

@@ -8,10 +8,11 @@
 #include "../Helpers/Helpers.h"
 
 char* funcs[] = {
-        "addByIndex", "addToEnd", "addToBeginning", "addAfterValue",
-        "deleteByIndex", "deleteFirst", "deleteLast", "deleteByValue",
+        //"addByIndex", "addToEnd", "addToBeginning", "addAfterValue",
+        "add",
+        //"deleteByIndex", "deleteFirst", "deleteLast", "deleteByValue",
+        "delete",
         "print",
-        "input n elements",
         "remove negative numbers", "create list from not even numbers"
 };
 
@@ -19,6 +20,8 @@ LinkedList* list;
 
 
 void printList(LinkedList* l);
+
+void inputList();
 
 void listDestroyer(void* val)
 {
@@ -38,8 +41,10 @@ bool comparator(void* current, void* toSearch)
 void Integers()
 {
     list = createList();
-    int numOfFuncs = sizeof(funcs) / sizeof(char*);
 
+    inputList();
+
+    int numOfFuncs = sizeof(funcs) / sizeof(char*);
     while (1)
     {
         printf("\nAvailable funcs:\n");
@@ -49,104 +54,147 @@ void Integers()
 
         int funcToExecute = IntInput("func to run:");
         switch (funcToExecute-1) {
-            //addByIndex
+            //add
             case 0:
             {
-                int index = IntInputWithValidating("index: ", listIndexInputValidator);
-                addByIndex(list, index, PtrIntInput("element to add: "));
+                char* availableSubFuncs[] = {
+                        "addByIndex",
+                        "addToEnd",
+                        "addToBeginning",
+                        "addAfterValue"
+                };
+                int numOfAvailableSubFuncs = sizeof(availableSubFuncs) / sizeof(char*);
 
-                printf("%s", "result=");
-                printList(list);
+                printf("\nAvailable Sub Funcs:\n");
+                for (int i = 0; i < numOfAvailableSubFuncs; i++)
+                    printf("\t%d)%s\n", i + 1, availableSubFuncs[i]);
+
+                int subFuncToExecute = IntInput("sub func to run:");
+                switch (subFuncToExecute - 1) {
+                    //addByIndex
+                    case 0:
+                    {
+                        int index = IntInputWithValidating("index: ", listIndexInputValidator);
+                        addByIndex(list, index, PtrIntInput("element to add: "));
+
+                        printf("%s", "result=");
+                        printList(list);
+                        break;
+                    }
+
+                    //addToEnd
+                    case 1:
+                    {
+                        add(list, PtrIntInput("element to add: "));
+                        printf("%s", "result=");
+                        printList(list);
+                        break;
+                    }
+
+                    //addToBeginning
+                    case 2:
+                    {
+                        addToBeginning(list, PtrIntInput("element to add: "));
+                        printf("%s", "result=");
+                        printList(list);
+                        break;
+                    }
+
+                    //addAfterValue
+                    case 3:
+                    {
+                        int* valueToSearch = PtrIntInput("value to add after: ");
+                        int* value = PtrIntInput("value: ");
+                        addAfterValue(list, value, comparator, valueToSearch);
+
+                        printf("%s", "result=");
+                        printList(list);
+                        break;
+                    }
+
+                    default:
+                        printf("sub func not found");
+                }
                 break;
             }
 
-            //addToEnd
+            //delete
             case 1:
-                add(list, PtrIntInput("element to add: "));
-                printf("%s", "result=");
-                printList(list);
-                break;
-
-            //addToBeginning
-            case 2:
-                addToBeginning(list, PtrIntInput("element to add: "));
-                printf("%s", "result=");
-                printList(list);
-                break;
-
-            //addAfterValue
-            case 3:
             {
-                int* valueToSearch = PtrIntInput("value to add after: ");
-                int* value = PtrIntInput("value: ");
-                addAfterValue(list, value, comparator, valueToSearch);
+                char* availableSubFuncs[] = {
+                        "deleteByIndex",
+                        "deleteFirst",
+                        "deleteLast",
+                        "deleteByValue"
+                };
+                int numOfAvailableSubFuncs = sizeof(availableSubFuncs) / sizeof(char*);
+                if (list->size == 0)
+                {
+                    printf("list is empty\n");
+                    break;
+                }
 
-                printf("%s", "result=");
-                printList(list);
-                break;
-            }
+                printf("\nAvailable Sub Funcs:\n");
+                for (int i = 0; i < numOfAvailableSubFuncs; i++)
+                    printf("\t%d)%s\n", i + 1, availableSubFuncs[i]);
 
-            //deleteByIndex
-            case 4:
-            {
-                int index = IntInputWithValidating("index: ", listIndexInputValidator);
-                delete(list, index);
-                printf("%s", "result=");
-                printList(list);
-                break;
-            }
+                int subFuncToExecute = IntInput("sub func to run:");
+                switch (subFuncToExecute - 1) {
+                    //deleteByIndex
+                    case 0:
+                    {
+                        int index = IntInputWithValidating("index: ", listIndexInputValidator);
+                        delete(list, index);
+                        printf("%s", "result=");
+                        printList(list);
+                        break;
+                    }
 
-            //deleteFirst
-            case 5:
-                deleteFirst(list);
-                printf("%s", "result=");
-                printList(list);
-                break;
+                    //deleteFirst
+                    case 1:
+                    {
+                        deleteFirst(list);
+                        printf("%s", "result=");
+                        printList(list);
+                        break;
+                    }
 
-            //deleteLast
-            case 6:
-                deleteLast(list);
-                printf("%s", "result=");
-                printList(list);
-                break;
+                    //deleteLast
+                    case 2:
+                    {
+                        deleteLast(list);
+                        printf("%s", "result=");
+                        printList(list);
+                        break;
+                    }
 
-            //deleteByValue
-            case 7:
-            {
-                int* valueToSearch = PtrIntInput("value to delete: ");
-                deleteByValue(list, comparator, valueToSearch);
+                    //deleteByValue
+                    case 3:
+                    {
+                        int* valueToSearch = PtrIntInput("value to delete: ");
+                        deleteByValue(list, comparator, valueToSearch);
 
-                printf("%s", "result=");
-                printList(list);
+                        printf("%s", "result=");
+                        printList(list);
+                        break;
+                    }
+
+                    default:
+                        printf("sub func not found\n");
+                }
                 break;
             }
 
             //print
-            case 8:
-                printf("%s", "list=");
-                printList(list);
-                break;
-
-            //input n elements
-            case 9:
+            case 2:
             {
-                int n = IntInputWithValidating("n:", PositiveInt);
-                char* temp = calloc(5, sizeof(char));
-                for (int i=0; i < n; i++)
-                {
-                    sprintf(temp, "%d=", i);
-                    add(list, PtrIntInput(temp));
-                }
-
-                free(temp);
-
-                printf("%s", "result=");
+                printf("%s", "list=");
                 printList(list);
                 break;
             }
 
             //remove negative numbers
-            case 10:
+            case 3:
             {
                 for (int i=0; i < list->size;)
                 {
@@ -162,7 +210,7 @@ void Integers()
             }
 
             //create list from not even numbers
-            case 11:
+            case 4:
             {
                 LinkedList* notEvenList = createList();
                 for (int i=0; i < list->size;)
@@ -187,7 +235,7 @@ void Integers()
                 break;
             }
 
-            case 12:
+            case 5:
             {
                 destroyList(list, listDestroyer);
                 return;
@@ -213,4 +261,30 @@ void printList(LinkedList* l)
     }
 
     printf("]\n");
+}
+
+void inputList()
+{
+    printf("Input elements for list(to finish input *):\n");
+
+    int error = 0;
+    char* temp = calloc(25, sizeof(char));
+    char* end;
+    while (1)
+    {
+        int* res = calloc(1, sizeof(int));
+
+        error = scanf("%s", temp);
+        CleanStdin();
+        if (error != 1)
+            continue;
+
+        if (temp[0] == '*')
+            break;
+
+        DefaultReplace(temp);
+
+        *res = strtol(temp, &end, 0);
+        add(list, res);
+    }
 }

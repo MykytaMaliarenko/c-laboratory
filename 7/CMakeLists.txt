@@ -11,5 +11,4 @@ add_executable(7 main.c
         Helpers/ConsoleHelpers.h Helpers/ConsoleHelpers.c
         Menu/Menu.h Menu/Menu.c
         Tasks/Task2.c Tasks/Task2.h
-        Tasks/TaskWorkingWithLinkedList.c Tasks/TaskWorkingWithLinkedList.h
         LinkedList/LinkeListFuncsForLab.c LinkedList/LinkeListFuncsForLab.h)

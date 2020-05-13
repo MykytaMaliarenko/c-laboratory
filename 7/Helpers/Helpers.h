@@ -6,6 +6,8 @@
 #define INC_1_HELPERS_H
 #include <stdbool.h>
 
+void DefaultReplace(char* str);
+
 void CleanStdin();
 
 int IntInput(char* text);
