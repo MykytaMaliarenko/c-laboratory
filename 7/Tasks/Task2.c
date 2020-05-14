@@ -285,6 +285,7 @@ void inputList()
         DefaultReplace(temp);
 
         *res = strtol(temp, &end, 0);
-        add(list, res);
+        if (*end == '\0')
+            add(list, res);
     }
 }
