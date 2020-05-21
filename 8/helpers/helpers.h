@@ -1,0 +1,37 @@
+//
+// Created by Asus on 05.02.2020.
+//
+
+#ifndef INC_1_HELPERS_H
+#define INC_1_HELPERS_H
+#include <stdbool.h>
+
+void DefaultReplace(char* str);
+
+void CleanStdinBuffer();
+
+void TerminalClear();
+
+void TerminalPause();
+
+int IntInput(char* text);
+
+int* PtrIntInput(char* text);
+
+int IntInputWithValidating(char* text, bool (*validator)(int));
+
+bool BoolInput(char* text);
+
+double DoubletInput(char* text);
+
+double DoubleInputWithValidating(char* text, bool (*validator)(double));
+
+bool Positive(double inp);
+
+bool PositiveInt(int inp);
+
+char* InputString(char* text);
+
+char* InputMultilineString(char* text);
+
+#endif //INC_1_HELPERS_H
