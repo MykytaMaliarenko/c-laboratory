@@ -14,6 +14,8 @@ void TerminalClear();
 
 void TerminalPause();
 
+void TerminalPrintAndWait(char* text);
+
 int IntInput(char* text);
 
 int* PtrIntInput(char* text);

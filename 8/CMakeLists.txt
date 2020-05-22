@@ -9,4 +9,6 @@ add_executable(8 main.c
         helpers/helpers.h helpers/helpers.c
         tasks/task_1.c tasks/task_1.h
         tasks/task_2.c tasks/task_2.h
-        helpers/utils.c helpers/utils.h)
+        helpers/utils.c helpers/utils.h
+        linked_list/linked_list.h linked_list/linked_list.c
+        humans/humans.c humans/humans.h)

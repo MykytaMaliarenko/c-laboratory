@@ -28,10 +28,7 @@ char* subFuncs[] = {
         "close file",
 };
 
-char* currentFilePath;
-
-
-void printAndWait(char* text);
+char* currentFilePathTask2;
 
 
 void Task1()
@@ -41,7 +38,7 @@ void Task1()
 
     while (1)
     {
-        if (currentFilePath == NULL)
+        if (currentFilePathTask2 == NULL)
         {
             char* rootFuncToExecute = consolePeekFunc(rootFuncs, 3);
             if (strcmp(rootFuncToExecute, "exit") == 0)
@@ -52,18 +49,18 @@ void Task1()
             }
 
             TerminalClear();
-            currentFilePath = InputString("file path:");
+            currentFilePathTask2 = InputString("file path:");
             if (strcmp(rootFuncToExecute, "create file") == 0)
             {
-                fileSystemCreateFile(currentFilePath);
+                fileSystemCreateFile(currentFilePathTask2);
             }
             else if (strcmp(rootFuncToExecute, "open file") == 0)
             {
-                if (fileSystemFileExists(currentFilePath) == false)
+                if (fileSystemFileExists(currentFilePathTask2) == false)
                 {
                     printf("File not found");
-                    printAndWait("File not found");
-                    currentFilePath = NULL;
+                    TerminalPrintAndWait("File not found");
+                    currentFilePathTask2 = NULL;
                 }
             }
         }
@@ -77,13 +74,13 @@ void Task1()
                 if (fileSystemFileExists(TEMP_FILE))
                     fileSystemPrintFile(TEMP_FILE);
                 else
-                    fileSystemPrintFile(currentFilePath);
+                    fileSystemPrintFile(currentFilePathTask2);
                 TerminalPause();
             }
             else if (strcmp(subFuncToExecute, "edit file") == 0)
             {
                 printf("Old content:");
-                fileSystemPrintFile(currentFilePath);
+                fileSystemPrintFile(currentFilePathTask2);
 
                 char* newContent = InputMultilineString("\nNew content(tab + enter to finish): \n");
                 fileSystemEditFile(TEMP_FILE, newContent);
@@ -92,11 +89,11 @@ void Task1()
             {
                 if (fileSystemFileExists(TEMP_FILE))
                 {
-                    fileSystemCopyFile(TEMP_FILE, currentFilePath);
+                    fileSystemCopyFile(TEMP_FILE, currentFilePathTask2);
                     fileSystemDestroyFile(TEMP_FILE);
                 }
                 else
-                    printAndWait("No changes");
+                    TerminalPrintAndWait("No changes");
             }
             else if (strcmp(subFuncToExecute, "save file as") == 0)
             {
@@ -105,15 +102,15 @@ void Task1()
                     char* newPath = InputString("new file path: ");
                     fileSystemCreateFile(newPath);
                     fileSystemCopyFile(TEMP_FILE, newPath);
-                    currentFilePath = NULL;
+                    currentFilePathTask2 = NULL;
                     fileSystemDestroyFile(TEMP_FILE);
                 }
                 else
-                    printAndWait("No changes");
+                    TerminalPrintAndWait("No changes");
             }
             else if (strcmp(subFuncToExecute, "copy rows without numbers") == 0)
             {
-                char* copyFrom = currentFilePath;
+                char* copyFrom = currentFilePathTask2;
                 if (fileSystemFileExists(TEMP_FILE))
                     copyFrom = TEMP_FILE;
 
@@ -122,35 +119,28 @@ void Task1()
             }
             else if (strcmp(subFuncToExecute, "count rows that begins with \"A\"") == 0)
             {
-                char* countFrom = currentFilePath;
+                char* countFrom = currentFilePathTask2;
                 if (fileSystemFileExists(TEMP_FILE))
                     countFrom = TEMP_FILE;
 
                 int num = fileSystemCountRowsThatBeginsWith(countFrom, 'A');
                 if (num == -1)
                 {
-                    printAndWait("couldn't open file");
+                    TerminalPrintAndWait("couldn't open file");
                     goto exit;
                 }
 
                 char res[50];
                 sprintf(res, "%d rows begins with \"A\"", num);
-                printAndWait(res);
+                TerminalPrintAndWait(res);
             }
             else
             {
-                currentFilePath = NULL;
+                currentFilePathTask2 = NULL;
             }
         }
 
         exit:
         TerminalClear();
     }
-}
-
-void printAndWait(char* text)
-{
-    TerminalClear();
-    printf("%s", text);
-    TerminalPause();
 }

@@ -46,6 +46,13 @@ void TerminalPause()
     int c = getchar();
 }
 
+void TerminalPrintAndWait(char* text)
+{
+    TerminalClear();
+    printf("%s", text);
+    TerminalPause();
+}
+
 int IntInput(char* text) {
     int res = 0;
     int error = 0;
