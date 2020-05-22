@@ -17,5 +17,12 @@ void fileSystemPrintFile(char* filepath);
 
 void fileSystemEditFile(char* filepath, char* newContent);
 
+void fileSystemCopyFile(char* copyTo, char* copyFrom);
+
+void fileSystemCopyRowsWithoutNumber(char* copyTo, char* copyFrom);
+
+int fileSystemCountRowsThatBeginsWith(char* filepath, char symbol);
+
+void fileSystemDestroyFile(char* path);
 
 #endif //INC_8_FILE_SYSTEM_DEFAULT_H

@@ -42,6 +42,7 @@ void TerminalClear()
 
 void TerminalPause()
 {
+    printf("\n...");
     int c = getchar();
 }
 
