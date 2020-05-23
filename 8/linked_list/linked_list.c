@@ -24,6 +24,19 @@ LinkedList* listCopy(LinkedList* list)
     return res;
 }
 
+void destroyListWithoutValues(LinkedList* self)
+{
+    LinkedListNode* currentNode = self->firstNode;
+    LinkedListNode* t = NULL;
+    while (currentNode != NULL) {
+        t = currentNode->nextNode;
+        free(currentNode);
+        currentNode = t;
+    }
+
+    free(self);
+}
+
 void destroyList(LinkedList* self,  void (*destroyVal)(void*))
 {
     LinkedListNode* currentNode = self->firstNode;
@@ -155,7 +168,7 @@ void listAdd(LinkedList* self, void* value)
 
 void listAddByIndex(LinkedList* self, int index, void* value)
 {
-    if (index >= 0 && index < self->size) {
+    if (index >= 0 && index <= self->size) {
         LinkedListNode* node = malloc(sizeof(LinkedListNode));
         node->value = value;
         node->nextNode = NULL;

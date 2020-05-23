@@ -24,6 +24,7 @@ struct LinkedList
 
 LinkedList* createList();
 LinkedList* listCopy(LinkedList* list);
+void destroyListWithoutValues(LinkedList* self);
 void destroyList(LinkedList* self,  void (*destroyVal)(void*));
 void listDefaultDestroyer(void* val);
 

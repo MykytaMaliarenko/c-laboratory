@@ -24,6 +24,7 @@ char* task2SubFuncs[] = {
         "view file",
         "add human",
         "remove human by index",
+        "renew human by index",
         "save file",
         "save file as",
         "remove all humans by weight and height",
@@ -55,6 +56,7 @@ void Task2()
     if (fileSystemFileExists(TASK2_TEMP_FILE))
         fileSystemDestroyFile(TASK2_TEMP_FILE);
 
+    TerminalClear();
     while (1)
     {
         if (currentFilePathTask2 == NULL)
@@ -85,7 +87,7 @@ void Task2()
         }
         else
         {
-            char* subFuncToExecute = consolePeekFunc(task2SubFuncs, 8);
+            char* subFuncToExecute = consolePeekFunc(task2SubFuncs, 9);
 
             TerminalClear();
             if (strcmp(subFuncToExecute, "view file") == 0)
@@ -98,6 +100,7 @@ void Task2()
                     humans = listFilter(humans, humansFiltersInactiveOnly);
 
                 printHumans(humans);
+                destroyListWithoutValues(humans);
                 TerminalPause();
             }
             else if (strcmp(subFuncToExecute, "add human") == 0)
@@ -112,7 +115,7 @@ void Task2()
                 saveHumans(humans);
             }
             else if (strcmp(subFuncToExecute, "remove human by index") == 0) {
-                int index = IntInput("index");
+                int index = IntInput("index: ");
                 Humans humans = getHumans();
 
                 if (index < 0 || index >= humans->size)
@@ -129,31 +132,64 @@ void Task2()
                     saveHumans(humans);
                 }
             }
-            else if (strcmp(subFuncToExecute, "save file") == 0)
-            {
-                if (fileSystemFileExists(TASK2_TEMP_FILE))
-                {
-                    bool minimized = BoolInput("save with minimization(t/f) ?");
-                    if (minimized)
-                    {
-                        Humans humans = getHumans();
-                        //MEMORY LEEK HERE
-                        Humans newHumans = listFilter(listCopy(humans), humansFilterActiveOnly);
-                        destroyList(humans, listDefaultDestroyer);
-                        fileSystemStructsWrite(currentFilePathTask2, newHumans);
-                    }
-                    else
-                    {
-                        fileSystemStructCopyFile(TASK2_TEMP_FILE, currentFilePathTask2);
-                    }
+            else if (strcmp(subFuncToExecute, "renew human by index") == 0) {
+                int index = IntInput("index: ");
+                Humans humans = getHumans();
 
-                    fileSystemDestroyFile(TASK2_TEMP_FILE);
+                if (index < 0 || index >= humans->size)
+                {
+                    TerminalPrintAndWait("index not found");
                 }
                 else
-                    TerminalPrintAndWait("no changes");
+                {
+                    bool found = false;
+                    int counter = 0;
+                    for (int i = 0; i < humans->size; i++)
+                    {
+                        Human* current = listGet(humans, i);
+                        if (current->isActive == false)
+                        {
+                            if (counter == index)
+                            {
+                                current->isActive = true;
+                                found = true;
+                                break;
+                            }
+
+                            counter++;
+                        }
+                    }
+
+                    if (found)
+                        saveHumans(humans);
+                    else
+                        TerminalPrintAndWait("not found");
+                }
+            }
+            else if (strcmp(subFuncToExecute, "save file") == 0)
+            {
+                bool minimized = BoolInput("save with minimization(t/f) ?");
+                if (fileSystemFileExists(TASK2_TEMP_FILE))
+                {
+                    fileSystemStructCopyFile(TASK2_TEMP_FILE, currentFilePathTask2);
+                    fileSystemDestroyFile(TASK2_TEMP_FILE);
+                }
+
+                if (minimized)
+                {
+                    Humans humans = getHumans();
+                    Humans newHumans = listFilter(humans, humansFilterActiveOnly);
+                    destroyListWithoutValues(humans);
+                    fileSystemStructsWrite(currentFilePathTask2, newHumans);
+                }
             }
             else if (strcmp(subFuncToExecute, "save file as") == 0)
             {
+                char* newPath = InputString("new file path: ");
+                fileSystemCreateFile(newPath);
+                fileSystemStructCopyFile(TASK2_TEMP_FILE, newPath);
+                currentFilePathTask2 = NULL;
+                fileSystemDestroyFile(TASK2_TEMP_FILE);
             }
             else if (strcmp(subFuncToExecute, "remove all humans by weight and height") == 0)
             {
@@ -225,6 +261,7 @@ void printHumans(Humans humans)
                "\n\tweight: %f\n\theight: %f\n\tbirth year: %d",
                human->fistName, human->lastName, human->middleName,
                human->weight, human->height, human->birthYear);
+        printf("\n");
     }
 }
 

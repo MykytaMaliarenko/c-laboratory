@@ -36,6 +36,7 @@ void Task1()
     if (fileSystemFileExists(TEMP_FILE))
         fileSystemDestroyFile(TEMP_FILE);
 
+    TerminalClear();
     while (1)
     {
         if (currentFilePathTask2 == NULL)
